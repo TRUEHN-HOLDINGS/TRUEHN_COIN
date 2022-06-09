@@ -1,2 +1,2075 @@
 # TRUEHN_COIN
 The blockchain euro for the digital age. 
+
+
+OPEN SOURCE 
+
+
+ISSUER : AFM / EC / SR
+
+
+By Human Nature 4 Human Nature 
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+Contract Source Code (Solidity)
+
+/**
+ *Submitted for verification at polygonscan.com on 2021-10-25
+*/
+
+pragma solidity ^0.8.3;
+
+contract Token {
+    mapping(address => uint) public balances;
+    mapping(address => mapping(address => uint)) public allowed;
+    uint public totalSupply;
+    string public name;
+    string public symbol;
+    uint public decimals;
+    
+    event Transfer(address indexed from, address indexed to, uint value);
+    event Approval(address indexed owner, address indexed spender, uint value);
+    
+    constructor(string memory _name, string memory _symbol, uint _dec, uint _supply, address _owner) {
+        name = _name;
+        symbol = _symbol;
+        decimals = _dec;
+        totalSupply = _supply * 10 ** decimals;
+        balances[_owner] = totalSupply;
+        emit Transfer(address(0), _owner, totalSupply);
+    }
+    
+    function balanceOf(address owner) public view returns(uint) {
+        return balances[owner];
+    }
+    
+    function transfer(address to, uint value) public returns(bool) {
+        require(balances[msg.sender] >= value, 'balance too low');
+        balances[to] += value;
+        balances[msg.sender] -= value;
+        emit Transfer(msg.sender, to, value);
+        return true;
+    }
+    
+    function transferFrom(address from, address to, uint value) public returns(bool) {
+        require(balances[from] >= value, 'balance too low');
+        require(allowed[from][msg.sender] >= value, 'allowance too low');
+        balances[to] += value;
+        balances[from] -= value;
+        allowed[from][msg.sender] -=value;
+        emit Transfer(from, to, value);
+        return true;   
+    }
+    
+    function approve(address spender, uint value) public returns (bool) {
+        allowed[msg.sender][spender] = value;
+        emit Approval(msg.sender, spender, value);
+        return true;   
+    }
+    
+    function allowance(address owner, address spender) public view returns (uint) {
+        return allowed[owner][spender];
+    }
+    
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Contract ABI
+
+[{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_symbol","type":"string"},{"internalType":"uint256","name":"_dec","type":"uint256"},{"internalType":"uint256","name":"_supply","type":"uint256"},{"internalType":"address","name":"_owner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"allowed","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"}]
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Contract Creation Code
+
+PUSH1 0x80
+PUSH1 0x40
+MSTORE
+CALLVALUE
+DUP1
+ISZERO
+PUSH2 0x0010
+JUMPI
+PUSH1 0x00
+DUP1
+REVERT
+JUMPDEST
+POP
+PUSH1 0x04
+CALLDATASIZE
+LT
+PUSH2 0x00a9
+JUMPI
+PUSH1 0x00
+CALLDATALOAD
+PUSH1 0xe0
+'1c'(Unknown Opcode)
+DUP1
+PUSH4 0x313ce567
+GT
+PUSH2 0x0071
+JUMPI
+DUP1
+PUSH4 0x313ce567
+EQ
+PUSH2 0x017a
+JUMPI
+DUP1
+PUSH4 0x5c658165
+EQ
+PUSH2 0x0198
+JUMPI
+DUP1
+PUSH4 0x70a08231
+EQ
+PUSH2 0x01c8
+JUMPI
+DUP1
+PUSH4 0x95d89b41
+EQ
+PUSH2 0x01f8
+JUMPI
+DUP1
+PUSH4 0xa9059cbb
+EQ
+PUSH2 0x0216
+JUMPI
+DUP1
+PUSH4 0xdd62ed3e
+EQ
+PUSH2 0x0246
+JUMPI
+PUSH2 0x00a9
+JUMP
+JUMPDEST
+DUP1
+PUSH4 0x06fdde03
+EQ
+PUSH2 0x00ae
+JUMPI
+DUP1
+PUSH4 0x095ea7b3
+EQ
+PUSH2 0x00cc
+JUMPI
+DUP1
+PUSH4 0x18160ddd
+EQ
+PUSH2 0x00fc
+JUMPI
+DUP1
+PUSH4 0x23b872dd
+EQ
+PUSH2 0x011a
+JUMPI
+DUP1
+PUSH4 0x27e235e3
+EQ
+PUSH2 0x014a
+JUMPI
+JUMPDEST
+PUSH1 0x00
+DUP1
+REVERT
+JUMPDEST
+PUSH2 0x00b6
+PUSH2 0x0276
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+PUSH2 0x00c3
+SWAP2
+SWAP1
+PUSH2 0x0bf9
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+RETURN
+JUMPDEST
+PUSH2 0x00e6
+PUSH1 0x04
+DUP1
+CALLDATASIZE
+SUB
+DUP2
+ADD
+SWAP1
+PUSH2 0x00e1
+SWAP2
+SWAP1
+PUSH2 0x0b05
+JUMP
+JUMPDEST
+PUSH2 0x0304
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+PUSH2 0x00f3
+SWAP2
+SWAP1
+PUSH2 0x0bde
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+RETURN
+JUMPDEST
+PUSH2 0x0104
+PUSH2 0x03f6
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+PUSH2 0x0111
+SWAP2
+SWAP1
+PUSH2 0x0c5b
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+RETURN
+JUMPDEST
+PUSH2 0x0134
+PUSH1 0x04
+DUP1
+CALLDATASIZE
+SUB
+DUP2
+ADD
+SWAP1
+PUSH2 0x012f
+SWAP2
+SWAP1
+PUSH2 0x0ab6
+JUMP
+JUMPDEST
+PUSH2 0x03fc
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+PUSH2 0x0141
+SWAP2
+SWAP1
+PUSH2 0x0bde
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+RETURN
+JUMPDEST
+PUSH2 0x0164
+PUSH1 0x04
+DUP1
+CALLDATASIZE
+SUB
+DUP2
+ADD
+SWAP1
+PUSH2 0x015f
+SWAP2
+SWAP1
+PUSH2 0x0a51
+JUMP
+JUMPDEST
+PUSH2 0x06eb
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+PUSH2 0x0171
+SWAP2
+SWAP1
+PUSH2 0x0c5b
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+RETURN
+JUMPDEST
+PUSH2 0x0182
+PUSH2 0x0703
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+PUSH2 0x018f
+SWAP2
+SWAP1
+PUSH2 0x0c5b
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+RETURN
+JUMPDEST
+PUSH2 0x01b2
+PUSH1 0x04
+DUP1
+CALLDATASIZE
+SUB
+DUP2
+ADD
+SWAP1
+PUSH2 0x01ad
+SWAP2
+SWAP1
+PUSH2 0x0a7a
+JUMP
+JUMPDEST
+PUSH2 0x0709
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+PUSH2 0x01bf
+SWAP2
+SWAP1
+PUSH2 0x0c5b
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+RETURN
+JUMPDEST
+PUSH2 0x01e2
+PUSH1 0x04
+DUP1
+CALLDATASIZE
+SUB
+DUP2
+ADD
+SWAP1
+PUSH2 0x01dd
+SWAP2
+SWAP1
+PUSH2 0x0a51
+JUMP
+JUMPDEST
+PUSH2 0x072e
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+PUSH2 0x01ef
+SWAP2
+SWAP1
+PUSH2 0x0c5b
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+RETURN
+JUMPDEST
+PUSH2 0x0200
+PUSH2 0x0776
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+PUSH2 0x020d
+SWAP2
+SWAP1
+PUSH2 0x0bf9
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+RETURN
+JUMPDEST
+PUSH2 0x0230
+PUSH1 0x04
+DUP1
+CALLDATASIZE
+SUB
+DUP2
+ADD
+SWAP1
+PUSH2 0x022b
+SWAP2
+SWAP1
+PUSH2 0x0b05
+JUMP
+JUMPDEST
+PUSH2 0x0804
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+PUSH2 0x023d
+SWAP2
+SWAP1
+PUSH2 0x0bde
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+RETURN
+JUMPDEST
+PUSH2 0x0260
+PUSH1 0x04
+DUP1
+CALLDATASIZE
+SUB
+DUP2
+ADD
+SWAP1
+PUSH2 0x025b
+SWAP2
+SWAP1
+PUSH2 0x0a7a
+JUMP
+JUMPDEST
+PUSH2 0x09a0
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+PUSH2 0x026d
+SWAP2
+SWAP1
+PUSH2 0x0c5b
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+RETURN
+JUMPDEST
+PUSH1 0x03
+DUP1
+SLOAD
+PUSH2 0x0283
+SWAP1
+PUSH2 0x0d97
+JUMP
+JUMPDEST
+DUP1
+PUSH1 0x1f
+ADD
+PUSH1 0x20
+DUP1
+SWAP2
+DIV
+MUL
+PUSH1 0x20
+ADD
+PUSH1 0x40
+MLOAD
+SWAP1
+DUP2
+ADD
+PUSH1 0x40
+MSTORE
+DUP1
+SWAP3
+SWAP2
+SWAP1
+DUP2
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+DUP3
+DUP1
+SLOAD
+PUSH2 0x02af
+SWAP1
+PUSH2 0x0d97
+JUMP
+JUMPDEST
+DUP1
+ISZERO
+PUSH2 0x02fc
+JUMPI
+DUP1
+PUSH1 0x1f
+LT
+PUSH2 0x02d1
+JUMPI
+PUSH2 0x0100
+DUP1
+DUP4
+SLOAD
+DIV
+MUL
+DUP4
+MSTORE
+SWAP2
+PUSH1 0x20
+ADD
+SWAP2
+PUSH2 0x02fc
+JUMP
+JUMPDEST
+DUP3
+ADD
+SWAP2
+SWAP1
+PUSH1 0x00
+MSTORE
+PUSH1 0x20
+PUSH1 0x00
+SHA3
+SWAP1
+JUMPDEST
+DUP2
+SLOAD
+DUP2
+MSTORE
+SWAP1
+PUSH1 0x01
+ADD
+SWAP1
+PUSH1 0x20
+ADD
+DUP1
+DUP4
+GT
+PUSH2 0x02df
+JUMPI
+DUP3
+SWAP1
+SUB
+PUSH1 0x1f
+AND
+DUP3
+ADD
+SWAP2
+JUMPDEST
+POP
+POP
+POP
+POP
+POP
+DUP2
+JUMP
+JUMPDEST
+PUSH1 0x00
+DUP2
+PUSH1 0x01
+PUSH1 0x00
+CALLER
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+SWAP1
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+PUSH1 0x00
+SHA3
+PUSH1 0x00
+DUP6
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+SWAP1
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+PUSH1 0x00
+SHA3
+DUP2
+SWAP1
+SSTORE
+POP
+DUP3
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+CALLER
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH32 0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925
+DUP5
+PUSH1 0x40
+MLOAD
+PUSH2 0x03e4
+SWAP2
+SWAP1
+PUSH2 0x0c5b
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+LOG3
+PUSH1 0x01
+SWAP1
+POP
+SWAP3
+SWAP2
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x02
+SLOAD
+DUP2
+JUMP
+JUMPDEST
+PUSH1 0x00
+DUP2
+PUSH1 0x00
+DUP1
+DUP7
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+SWAP1
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+PUSH1 0x00
+SHA3
+SLOAD
+LT
+ISZERO
+PUSH2 0x047f
+JUMPI
+PUSH1 0x40
+MLOAD
+PUSH32 0x08c379a000000000000000000000000000000000000000000000000000000000
+DUP2
+MSTORE
+PUSH1 0x04
+ADD
+PUSH2 0x0476
+SWAP1
+PUSH2 0x0c1b
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+REVERT
+JUMPDEST
+DUP2
+PUSH1 0x01
+PUSH1 0x00
+DUP7
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+SWAP1
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+PUSH1 0x00
+SHA3
+PUSH1 0x00
+CALLER
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+SWAP1
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+PUSH1 0x00
+SHA3
+SLOAD
+LT
+ISZERO
+PUSH2 0x053e
+JUMPI
+PUSH1 0x40
+MLOAD
+PUSH32 0x08c379a000000000000000000000000000000000000000000000000000000000
+DUP2
+MSTORE
+PUSH1 0x04
+ADD
+PUSH2 0x0535
+SWAP1
+PUSH2 0x0c3b
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+REVERT
+JUMPDEST
+DUP2
+PUSH1 0x00
+DUP1
+DUP6
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+SWAP1
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+PUSH1 0x00
+SHA3
+PUSH1 0x00
+DUP3
+DUP3
+SLOAD
+PUSH2 0x058c
+SWAP2
+SWAP1
+PUSH2 0x0c92
+JUMP
+JUMPDEST
+SWAP3
+POP
+POP
+DUP2
+SWAP1
+SSTORE
+POP
+DUP2
+PUSH1 0x00
+DUP1
+DUP7
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+SWAP1
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+PUSH1 0x00
+SHA3
+PUSH1 0x00
+DUP3
+DUP3
+SLOAD
+PUSH2 0x05e1
+SWAP2
+SWAP1
+PUSH2 0x0ce8
+JUMP
+JUMPDEST
+SWAP3
+POP
+POP
+DUP2
+SWAP1
+SSTORE
+POP
+DUP2
+PUSH1 0x01
+PUSH1 0x00
+DUP7
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+SWAP1
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+PUSH1 0x00
+SHA3
+PUSH1 0x00
+CALLER
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+SWAP1
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+PUSH1 0x00
+SHA3
+PUSH1 0x00
+DUP3
+DUP3
+SLOAD
+PUSH2 0x0674
+SWAP2
+SWAP1
+PUSH2 0x0ce8
+JUMP
+JUMPDEST
+SWAP3
+POP
+POP
+DUP2
+SWAP1
+SSTORE
+POP
+DUP3
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP5
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH32 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+DUP5
+PUSH1 0x40
+MLOAD
+PUSH2 0x06d8
+SWAP2
+SWAP1
+PUSH2 0x0c5b
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+LOG3
+PUSH1 0x01
+SWAP1
+POP
+SWAP4
+SWAP3
+POP
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH1 0x20
+MSTORE
+DUP1
+PUSH1 0x00
+MSTORE
+PUSH1 0x40
+PUSH1 0x00
+SHA3
+PUSH1 0x00
+SWAP2
+POP
+SWAP1
+POP
+SLOAD
+DUP2
+JUMP
+JUMPDEST
+PUSH1 0x05
+SLOAD
+DUP2
+JUMP
+JUMPDEST
+PUSH1 0x01
+PUSH1 0x20
+MSTORE
+DUP2
+PUSH1 0x00
+MSTORE
+PUSH1 0x40
+PUSH1 0x00
+SHA3
+PUSH1 0x20
+MSTORE
+DUP1
+PUSH1 0x00
+MSTORE
+PUSH1 0x40
+PUSH1 0x00
+SHA3
+PUSH1 0x00
+SWAP2
+POP
+SWAP2
+POP
+POP
+SLOAD
+DUP2
+JUMP
+JUMPDEST
+PUSH1 0x00
+DUP1
+PUSH1 0x00
+DUP4
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+SWAP1
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+PUSH1 0x00
+SHA3
+SLOAD
+SWAP1
+POP
+SWAP2
+SWAP1
+POP
+JUMP
+JUMPDEST
+PUSH1 0x04
+DUP1
+SLOAD
+PUSH2 0x0783
+SWAP1
+PUSH2 0x0d97
+JUMP
+JUMPDEST
+DUP1
+PUSH1 0x1f
+ADD
+PUSH1 0x20
+DUP1
+SWAP2
+DIV
+MUL
+PUSH1 0x20
+ADD
+PUSH1 0x40
+MLOAD
+SWAP1
+DUP2
+ADD
+PUSH1 0x40
+MSTORE
+DUP1
+SWAP3
+SWAP2
+SWAP1
+DUP2
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+DUP3
+DUP1
+SLOAD
+PUSH2 0x07af
+SWAP1
+PUSH2 0x0d97
+JUMP
+JUMPDEST
+DUP1
+ISZERO
+PUSH2 0x07fc
+JUMPI
+DUP1
+PUSH1 0x1f
+LT
+PUSH2 0x07d1
+JUMPI
+PUSH2 0x0100
+DUP1
+DUP4
+SLOAD
+DIV
+MUL
+DUP4
+MSTORE
+SWAP2
+PUSH1 0x20
+ADD
+SWAP2
+PUSH2 0x07fc
+JUMP
+JUMPDEST
+DUP3
+ADD
+SWAP2
+SWAP1
+PUSH1 0x00
+MSTORE
+PUSH1 0x20
+PUSH1 0x00
+SHA3
+SWAP1
+JUMPDEST
+DUP2
+SLOAD
+DUP2
+MSTORE
+SWAP1
+PUSH1 0x01
+ADD
+SWAP1
+PUSH1 0x20
+ADD
+DUP1
+DUP4
+GT
+PUSH2 0x07df
+JUMPI
+DUP3
+SWAP1
+SUB
+PUSH1 0x1f
+AND
+DUP3
+ADD
+SWAP2
+JUMPDEST
+POP
+POP
+POP
+POP
+POP
+DUP2
+JUMP
+JUMPDEST
+PUSH1 0x00
+DUP2
+PUSH1 0x00
+DUP1
+CALLER
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+SWAP1
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+PUSH1 0x00
+SHA3
+SLOAD
+LT
+ISZERO
+PUSH2 0x0887
+JUMPI
+PUSH1 0x40
+MLOAD
+PUSH32 0x08c379a000000000000000000000000000000000000000000000000000000000
+DUP2
+MSTORE
+PUSH1 0x04
+ADD
+PUSH2 0x087e
+SWAP1
+PUSH2 0x0c1b
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+REVERT
+JUMPDEST
+DUP2
+PUSH1 0x00
+DUP1
+DUP6
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+SWAP1
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+PUSH1 0x00
+SHA3
+PUSH1 0x00
+DUP3
+DUP3
+SLOAD
+PUSH2 0x08d5
+SWAP2
+SWAP1
+PUSH2 0x0c92
+JUMP
+JUMPDEST
+SWAP3
+POP
+POP
+DUP2
+SWAP1
+SSTORE
+POP
+DUP2
+PUSH1 0x00
+DUP1
+CALLER
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+SWAP1
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+PUSH1 0x00
+SHA3
+PUSH1 0x00
+DUP3
+DUP3
+SLOAD
+PUSH2 0x092a
+SWAP2
+SWAP1
+PUSH2 0x0ce8
+JUMP
+JUMPDEST
+SWAP3
+POP
+POP
+DUP2
+SWAP1
+SSTORE
+POP
+DUP3
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+CALLER
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH32 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+DUP5
+PUSH1 0x40
+MLOAD
+PUSH2 0x098e
+SWAP2
+SWAP1
+PUSH2 0x0c5b
+JUMP
+JUMPDEST
+PUSH1 0x40
+MLOAD
+DUP1
+SWAP2
+SUB
+SWAP1
+LOG3
+PUSH1 0x01
+SWAP1
+POP
+SWAP3
+SWAP2
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH1 0x01
+PUSH1 0x00
+DUP5
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+SWAP1
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+PUSH1 0x00
+SHA3
+PUSH1 0x00
+DUP4
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+AND
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+SWAP1
+DUP2
+MSTORE
+PUSH1 0x20
+ADD
+PUSH1 0x00
+SHA3
+SLOAD
+SWAP1
+POP
+SWAP3
+SWAP2
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+DUP2
+CALLDATALOAD
+SWAP1
+POP
+PUSH2 0x0a36
+DUP2
+PUSH2 0x0e8a
+JUMP
+JUMPDEST
+SWAP3
+SWAP2
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+DUP2
+CALLDATALOAD
+SWAP1
+POP
+PUSH2 0x0a4b
+DUP2
+PUSH2 0x0ea1
+JUMP
+JUMPDEST
+SWAP3
+SWAP2
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH1 0x20
+DUP3
+DUP5
+SUB
+SLT
+ISZERO
+PUSH2 0x0a63
+JUMPI
+PUSH1 0x00
+DUP1
+REVERT
+JUMPDEST
+PUSH1 0x00
+PUSH2 0x0a71
+DUP5
+DUP3
+DUP6
+ADD
+PUSH2 0x0a27
+JUMP
+JUMPDEST
+SWAP2
+POP
+POP
+SWAP3
+SWAP2
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+DUP1
+PUSH1 0x40
+DUP4
+DUP6
+SUB
+SLT
+ISZERO
+PUSH2 0x0a8d
+JUMPI
+PUSH1 0x00
+DUP1
+REVERT
+JUMPDEST
+PUSH1 0x00
+PUSH2 0x0a9b
+DUP6
+DUP3
+DUP7
+ADD
+PUSH2 0x0a27
+JUMP
+JUMPDEST
+SWAP3
+POP
+POP
+PUSH1 0x20
+PUSH2 0x0aac
+DUP6
+DUP3
+DUP7
+ADD
+PUSH2 0x0a27
+JUMP
+JUMPDEST
+SWAP2
+POP
+POP
+SWAP3
+POP
+SWAP3
+SWAP1
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+DUP1
+PUSH1 0x00
+PUSH1 0x60
+DUP5
+DUP7
+SUB
+SLT
+ISZERO
+PUSH2 0x0acb
+JUMPI
+PUSH1 0x00
+DUP1
+REVERT
+JUMPDEST
+PUSH1 0x00
+PUSH2 0x0ad9
+DUP7
+DUP3
+DUP8
+ADD
+PUSH2 0x0a27
+JUMP
+JUMPDEST
+SWAP4
+POP
+POP
+PUSH1 0x20
+PUSH2 0x0aea
+DUP7
+DUP3
+DUP8
+ADD
+PUSH2 0x0a27
+JUMP
+JUMPDEST
+SWAP3
+POP
+POP
+PUSH1 0x40
+PUSH2 0x0afb
+DUP7
+DUP3
+DUP8
+ADD
+PUSH2 0x0a3c
+JUMP
+JUMPDEST
+SWAP2
+POP
+POP
+SWAP3
+POP
+SWAP3
+POP
+SWAP3
+JUMP
+JUMPDEST
+PUSH1 0x00
+DUP1
+PUSH1 0x40
+DUP4
+DUP6
+SUB
+SLT
+ISZERO
+PUSH2 0x0b18
+JUMPI
+PUSH1 0x00
+DUP1
+REVERT
+JUMPDEST
+PUSH1 0x00
+PUSH2 0x0b26
+DUP6
+DUP3
+DUP7
+ADD
+PUSH2 0x0a27
+JUMP
+JUMPDEST
+SWAP3
+POP
+POP
+PUSH1 0x20
+PUSH2 0x0b37
+DUP6
+DUP3
+DUP7
+ADD
+PUSH2 0x0a3c
+JUMP
+JUMPDEST
+SWAP2
+POP
+POP
+SWAP3
+POP
+SWAP3
+SWAP1
+POP
+JUMP
+JUMPDEST
+PUSH2 0x0b4a
+DUP2
+PUSH2 0x0d2e
+JUMP
+JUMPDEST
+DUP3
+MSTORE
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH2 0x0b5b
+DUP3
+PUSH2 0x0c76
+JUMP
+JUMPDEST
+PUSH2 0x0b65
+DUP2
+DUP6
+PUSH2 0x0c81
+JUMP
+JUMPDEST
+SWAP4
+POP
+PUSH2 0x0b75
+DUP2
+DUP6
+PUSH1 0x20
+DUP7
+ADD
+PUSH2 0x0d64
+JUMP
+JUMPDEST
+PUSH2 0x0b7e
+DUP2
+PUSH2 0x0e27
+JUMP
+JUMPDEST
+DUP5
+ADD
+SWAP2
+POP
+POP
+SWAP3
+SWAP2
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH2 0x0b96
+PUSH1 0x0f
+DUP4
+PUSH2 0x0c81
+JUMP
+JUMPDEST
+SWAP2
+POP
+PUSH2 0x0ba1
+DUP3
+PUSH2 0x0e38
+JUMP
+JUMPDEST
+PUSH1 0x20
+DUP3
+ADD
+SWAP1
+POP
+SWAP2
+SWAP1
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH2 0x0bb9
+PUSH1 0x11
+DUP4
+PUSH2 0x0c81
+JUMP
+JUMPDEST
+SWAP2
+POP
+PUSH2 0x0bc4
+DUP3
+PUSH2 0x0e61
+JUMP
+JUMPDEST
+PUSH1 0x20
+DUP3
+ADD
+SWAP1
+POP
+SWAP2
+SWAP1
+POP
+JUMP
+JUMPDEST
+PUSH2 0x0bd8
+DUP2
+PUSH2 0x0d5a
+JUMP
+JUMPDEST
+DUP3
+MSTORE
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH1 0x20
+DUP3
+ADD
+SWAP1
+POP
+PUSH2 0x0bf3
+PUSH1 0x00
+DUP4
+ADD
+DUP5
+PUSH2 0x0b41
+JUMP
+JUMPDEST
+SWAP3
+SWAP2
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH1 0x20
+DUP3
+ADD
+SWAP1
+POP
+DUP2
+DUP2
+SUB
+PUSH1 0x00
+DUP4
+ADD
+MSTORE
+PUSH2 0x0c13
+DUP2
+DUP5
+PUSH2 0x0b50
+JUMP
+JUMPDEST
+SWAP1
+POP
+SWAP3
+SWAP2
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH1 0x20
+DUP3
+ADD
+SWAP1
+POP
+DUP2
+DUP2
+SUB
+PUSH1 0x00
+DUP4
+ADD
+MSTORE
+PUSH2 0x0c34
+DUP2
+PUSH2 0x0b89
+JUMP
+JUMPDEST
+SWAP1
+POP
+SWAP2
+SWAP1
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH1 0x20
+DUP3
+ADD
+SWAP1
+POP
+DUP2
+DUP2
+SUB
+PUSH1 0x00
+DUP4
+ADD
+MSTORE
+PUSH2 0x0c54
+DUP2
+PUSH2 0x0bac
+JUMP
+JUMPDEST
+SWAP1
+POP
+SWAP2
+SWAP1
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH1 0x20
+DUP3
+ADD
+SWAP1
+POP
+PUSH2 0x0c70
+PUSH1 0x00
+DUP4
+ADD
+DUP5
+PUSH2 0x0bcf
+JUMP
+JUMPDEST
+SWAP3
+SWAP2
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+DUP2
+MLOAD
+SWAP1
+POP
+SWAP2
+SWAP1
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+DUP3
+DUP3
+MSTORE
+PUSH1 0x20
+DUP3
+ADD
+SWAP1
+POP
+SWAP3
+SWAP2
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH2 0x0c9d
+DUP3
+PUSH2 0x0d5a
+JUMP
+JUMPDEST
+SWAP2
+POP
+PUSH2 0x0ca8
+DUP4
+PUSH2 0x0d5a
+JUMP
+JUMPDEST
+SWAP3
+POP
+DUP3
+PUSH32 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+SUB
+DUP3
+GT
+ISZERO
+PUSH2 0x0cdd
+JUMPI
+PUSH2 0x0cdc
+PUSH2 0x0dc9
+JUMP
+JUMPDEST
+JUMPDEST
+DUP3
+DUP3
+ADD
+SWAP1
+POP
+SWAP3
+SWAP2
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH2 0x0cf3
+DUP3
+PUSH2 0x0d5a
+JUMP
+JUMPDEST
+SWAP2
+POP
+PUSH2 0x0cfe
+DUP4
+PUSH2 0x0d5a
+JUMP
+JUMPDEST
+SWAP3
+POP
+DUP3
+DUP3
+LT
+ISZERO
+PUSH2 0x0d11
+JUMPI
+PUSH2 0x0d10
+PUSH2 0x0dc9
+JUMP
+JUMPDEST
+JUMPDEST
+DUP3
+DUP3
+SUB
+SWAP1
+POP
+SWAP3
+SWAP2
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH2 0x0d27
+DUP3
+PUSH2 0x0d3a
+JUMP
+JUMPDEST
+SWAP1
+POP
+SWAP2
+SWAP1
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+DUP2
+ISZERO
+ISZERO
+SWAP1
+POP
+SWAP2
+SWAP1
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+DUP3
+AND
+SWAP1
+POP
+SWAP2
+SWAP1
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+DUP2
+SWAP1
+POP
+SWAP2
+SWAP1
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+JUMPDEST
+DUP4
+DUP2
+LT
+ISZERO
+PUSH2 0x0d82
+JUMPI
+DUP1
+DUP3
+ADD
+MLOAD
+DUP2
+DUP5
+ADD
+MSTORE
+PUSH1 0x20
+DUP2
+ADD
+SWAP1
+POP
+PUSH2 0x0d67
+JUMP
+JUMPDEST
+DUP4
+DUP2
+GT
+ISZERO
+PUSH2 0x0d91
+JUMPI
+PUSH1 0x00
+DUP5
+DUP5
+ADD
+MSTORE
+JUMPDEST
+POP
+POP
+POP
+POP
+JUMP
+JUMPDEST
+PUSH1 0x00
+PUSH1 0x02
+DUP3
+DIV
+SWAP1
+POP
+PUSH1 0x01
+DUP3
+AND
+DUP1
+PUSH2 0x0daf
+JUMPI
+PUSH1 0x7f
+DUP3
+AND
+SWAP2
+POP
+JUMPDEST
+PUSH1 0x20
+DUP3
+LT
+DUP2
+EQ
+ISZERO
+PUSH2 0x0dc3
+JUMPI
+PUSH2 0x0dc2
+PUSH2 0x0df8
+JUMP
+JUMPDEST
+JUMPDEST
+POP
+SWAP2
+SWAP1
+POP
+JUMP
+JUMPDEST
+PUSH32 0x4e487b7100000000000000000000000000000000000000000000000000000000
+PUSH1 0x00
+MSTORE
+PUSH1 0x11
+PUSH1 0x04
+MSTORE
+PUSH1 0x24
+PUSH1 0x00
+REVERT
+JUMPDEST
+PUSH32 0x4e487b7100000000000000000000000000000000000000000000000000000000
+PUSH1 0x00
+MSTORE
+PUSH1 0x22
+PUSH1 0x04
+MSTORE
+PUSH1 0x24
+PUSH1 0x00
+REVERT
+JUMPDEST
+PUSH1 0x00
+PUSH1 0x1f
+NOT
+PUSH1 0x1f
+DUP4
+ADD
+AND
+SWAP1
+POP
+SWAP2
+SWAP1
+POP
+JUMP
+JUMPDEST
+PUSH32 0x62616c616e636520746f6f206c6f770000000000000000000000000000000000
+PUSH1 0x00
+DUP3
+ADD
+MSTORE
+POP
+JUMP
+JUMPDEST
+PUSH32 0x616c6c6f77616e636520746f6f206c6f77000000000000000000000000000000
+PUSH1 0x00
+DUP3
+ADD
+MSTORE
+POP
+JUMP
+JUMPDEST
+PUSH2 0x0e93
+DUP2
+PUSH2 0x0d1c
+JUMP
+JUMPDEST
+DUP2
+EQ
+PUSH2 0x0e9e
+JUMPI
+PUSH1 0x00
+DUP1
+REVERT
+JUMPDEST
+POP
+JUMP
+JUMPDEST
+PUSH2 0x0eaa
+DUP2
+PUSH2 0x0d5a
+JUMP
+JUMPDEST
+DUP2
+EQ
+PUSH2 0x0eb5
+JUMPI
+PUSH1 0x00
+DUP1
+REVERT
+JUMPDEST
+POP
+JUMP
+'fe'(Unknown Opcode)
+LOG2
+PUSH5 0x6970667358
+'22'(Unknown Opcode)
+SLT
+SHA3
+'0e'(Unknown Opcode)
+CALLDATALOAD
+PUSH16 0x8c76bee6341455975306ad3f8a6ec0a4
+SWAP16
+PUSH14 0xdc93f42b3ac1cb582d2b8a64736f
